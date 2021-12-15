@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="scyllavault">
+    <output-path>$PROJECT_DIR$/out/artifacts/scyllavault</output-path>
+    <root id="archive" name="scyllavault.jar">
+      <element id="module-output" name="Scylla_Vaults1" />
+    </root>
+  </artifact>
+</component>
