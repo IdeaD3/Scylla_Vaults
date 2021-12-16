@@ -7,14 +7,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class PlayerData {
+public class VaultLogs {
 
     private static File confFile;
     private static FileConfiguration fileConfig;
 
 
     public static void loadConfig() {
-        confFile = new File(Bukkit.getServer().getPluginManager().getPlugin("scyllavault").getDataFolder(), "playerData.yml");
+        confFile = new File(Bukkit.getServer().getPluginManager().getPlugin("scyllavault").getDataFolder(), "vaultLogs.yml");
         if (!confFile.exists()) {
             try {
                 confFile.createNewFile();
@@ -41,4 +41,3 @@ public class PlayerData {
         fileConfig = YamlConfiguration.loadConfiguration(confFile);
     }
 }
-

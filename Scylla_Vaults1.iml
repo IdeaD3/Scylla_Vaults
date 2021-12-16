@@ -22,5 +22,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="spigot-1.17.1" level="project" />
     <orderEntry type="library" name="MythicMobs-4.13.1" level="project" />
+    <orderEntry type="library" name="Vault" level="project" />
   </component>
 </module>

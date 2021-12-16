@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -43,29 +44,49 @@ public class Events implements Listener {
 
     @EventHandler
     public void onVaultClick(InventoryClickEvent e) {
+        Inventory top = e.getView().getTopInventory();
         if (!(e.getWhoClicked() instanceof Player)) {
             return;
         }
         Player player = (Player) e.getWhoClicked();
-
-        if (main.utils.isEditor(player.getUniqueId())) {
-            return;
-        }
-
         if (main.utils.inView.containsKey(player)) {
-            if (e.getClick() == ClickType.NUMBER_KEY) {
-                e.setCancelled(true);
-            }
-            if (e.getClickedInventory() == player.getInventory()) {
-                if (e.getCursor() != null && e.getCursor().getType() == Material.AIR) {
+            if (top.getSize() == 27 && e.getRawSlot() >= 0 && e.getRawSlot() <= 26) {
+                ItemStack i;
+                if (e.getCursor() == null || e.getCursor().getType() == Material.AIR && e.getCurrentItem() != null) {
+                    i = e.getCurrentItem();
+                    main.utils.logEvent(player.getUniqueId(), i, "Remove", main.utils.inView.get(player));
+                } else {
+                    if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR && e.getCursor() != null) {
+                        if (main.utils.isEditor(player.getUniqueId())) {
+                            i = e.getCursor();
+                            main.utils.logEvent(player.getUniqueId(), i, "insert", main.utils.inView.get(player));
+                        } else {
+                            e.setCancelled(true);
+                        }
+                    }
+                    return;
+                }
+
+                if (e.getClick() == ClickType.NUMBER_KEY) {
                     e.setCancelled(true);
                 }
-                return;
-            }
-            UUID uuid = main.utils.inView.get(player);
-            if (e.getView().getTitle().equalsIgnoreCase(Bukkit.getOfflinePlayer(uuid).getName() + "'s vault")) {
-                if (e.getCursor() != null && e.getCursor().getType() != Material.AIR) {
-                    e.setCancelled(true);
+                if (e.getClickedInventory() == player.getInventory()) {
+                    if (e.getCursor() != null && e.getCursor().getType() == Material.AIR) {
+                        e.setCancelled(true);
+                    }
+                    return;
+                }
+                UUID uuid = main.utils.inView.get(player);
+                if (e.getView().getTitle().equalsIgnoreCase(Bukkit.getOfflinePlayer(uuid).getName() + "'s vault")) {
+                    if (e.getCursor() != null && e.getCursor().getType() != Material.AIR) {
+                        e.setCancelled(true);
+                    }
+                }
+            } else {
+                if (!main.utils.isEditor(player.getUniqueId())) {
+                    if (!(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR && e.getCursor() != null)) {
+                        e.setCancelled(true);
+                    }
                 }
             }
         }
