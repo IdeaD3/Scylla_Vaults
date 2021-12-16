@@ -15,9 +15,9 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        saveDefaultConfig();
         PlayerData.loadConfig();
         VaultLogs.loadConfig();
-        saveDefaultConfig();
         setupChat();
         this.getCommand("sv").setExecutor(new Commands(this));
         Bukkit.getPluginManager().registerEvents(new Events(this), this);
